@@ -174,9 +174,9 @@ def run_ingestion():
     
     if not files_to_process:
         logger.info("----- All resumes are already processed. No API calls needed. -------")
-        return
+        return 
 
-    logger.info(f"------- Found {len(files_to_process)} NEW resumes to process..........")
+    logger.info(f"------- Found {len(files_to_process)} NEW resumes to process..........") 
     
     docs_buffer = []
     resumes_processed_in_batch = 0
@@ -191,7 +191,7 @@ def run_ingestion():
             docs = future.result()
             if docs:
                 docs_buffer.extend(docs)
-                resumes_processed_in_batch += 1
+                resumes_processed_in_batch += 1 
                 total_successful += 1
                 
                 if resumes_processed_in_batch >= RESUMES_PER_BATCH:
@@ -210,5 +210,5 @@ def run_ingestion():
         logger.info("---- Ingestion Complete!")
 
 if __name__ == "__main__":
-    if not os.path.exists(RESUME_DIR): os.makedirs(RESUME_DIR)
-    else: run_ingestion()
+    os.makedirs(RESUME_DIR, exist_ok=True)
+    run_ingestion()
