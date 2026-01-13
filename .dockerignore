@@ -3,3 +3,7 @@ __pycache__/
 .env
 .git
 .gitignore
+resumes/
+*.pyc 
+.cache/
+db/ 
