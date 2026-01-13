@@ -58,7 +58,7 @@ def flatten_metadata(meta: Dict[str, Any]) -> Dict[str, Any]:
     
     clean_meta = {}
     for key, value in meta.items():
-        if isinstance(value, (list, dict)):
+        if isinstance(value, (list, dict)): #checks whether an object belongs to a given type or tuple of types, including inherited classes.
             clean_meta[key] = json.dumps(value, ensure_ascii=False)
         elif value is None:
             clean_meta[key] = ""
@@ -207,7 +207,7 @@ def run_ingestion():
     if stop_signal:
         logger.critical(f"---- Process stopped due to Rate Limits. Saved {total_successful} resumes before stopping.")
     else:
-        logger.info("---- Ingestion Complete!")
+        logger.info("---- Ingestion Complete!") 
 
 if __name__ == "__main__":
     os.makedirs(RESUME_DIR, exist_ok=True)
