@@ -1,5 +1,7 @@
 # 📄 AI Resume Analyst (RAG-based)
 
+## Loom video : https://www.loom.com/share/f9468624240246e5b1ad8b92f2eb2ea8
+
 A powerful, local RAG (Retrieval-Augmented Generation) application designed to help HR professionals and Recruiters analyze hundreds of resumes instantly using Natural Language.
 
 Built with **LangChain**, **Streamlit**, **ChromaDB**, and **Groq (Llama-3)**.
