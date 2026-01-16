@@ -1,0 +1,187 @@
+{
+  "timestamp": "2026-01-16T14:52:47.894986",
+  "intent_classification": {
+    "accuracy": 0.8571428571428571,
+    "correct": 6,
+    "total": 7,
+    "passed_threshold": true,
+    "threshold": 0.85,
+    "detailed_results": [
+      {
+        "query": "List all Python developers in Bangalore",
+        "expected": "list_filter",
+        "predicted": "list_filter",
+        "correct": true,
+        "full_intent": {
+          "type": "list_filter",
+          "keywords": [
+            "Python",
+            "Bangalore"
+          ]
+        }
+      },
+      {
+        "query": "Find candidates with 5+ years of experience",
+        "expected": "list_filter",
+        "predicted": "list_filter",
+        "correct": true,
+        "full_intent": {
+          "type": "list_filter",
+          "keywords": [
+            "5+ years of experience"
+          ]
+        }
+      },
+      {
+        "query": "Show me all B.Tech graduates",
+        "expected": "list_filter",
+        "predicted": "list_filter",
+        "correct": true,
+        "full_intent": {
+          "type": "list_filter",
+          "keywords": [
+            "B.Tech"
+          ]
+        }
+      },
+      {
+        "query": "Compare John Doe and Jane Smith",
+        "expected": "compare_specific",
+        "predicted": "compare_specific",
+        "correct": true,
+        "full_intent": {
+          "type": "compare_specific",
+          "target_names": [
+            "John Doe",
+            "Jane Smith"
+          ]
+        }
+      },
+      {
+        "query": "Tell me about Harish's experience",
+        "expected": "compare_specific",
+        "predicted": "compare_specific",
+        "correct": true,
+        "full_intent": {
+          "type": "compare_specific",
+          "target_names": [
+            "Harish"
+          ],
+          "focus": "experience"
+        }
+      },
+      {
+        "query": "What skills are most common among candidates?",
+        "expected": "general",
+        "predicted": "list_filter",
+        "correct": false,
+        "full_intent": {
+          "type": "list_filter",
+          "keywords": [
+            "skills"
+          ]
+        }
+      },
+      {
+        "query": "What is machine learning?",
+        "expected": "general",
+        "predicted": "general",
+        "correct": true,
+        "full_intent": {
+          "type": "general",
+          "topic": "machine learning"
+        }
+      }
+    ]
+  },
+  "retrieval_quality": {
+    "average_precision": 0.0,
+    "average_recall": 0.0,
+    "average_f1": 0,
+    "passed_precision_threshold": false,
+    "passed_recall_threshold": false,
+    "precision_threshold": 0.7,
+    "recall_threshold": 0.6,
+    "detailed_results": [
+      {
+        "query": "Find Python developers",
+        "expected_resumes": [
+          "Akshit__resume.pdf",
+          "Resume-Dhanshree.pdf"
+        ],
+        "retrieved_resumes": [],
+        "precision": 0,
+        "recall": 0.0,
+        "f1": 0
+      },
+      {
+        "query": "List candidates in Pune",
+        "expected_resumes": [
+          "Resume-NaveenBohra.pdf"
+        ],
+        "retrieved_resumes": [],
+        "precision": 0,
+        "recall": 0.0,
+        "f1": 0
+      },
+      {
+        "query": "Who has a Masters degree?",
+        "expected_resumes": [
+          "RESUME-MANOJ_SHINDE-1.pdf"
+        ],
+        "retrieved_resumes": [],
+        "precision": 0,
+        "recall": 0.0,
+        "f1": 0
+      }
+    ]
+  },
+  "response_quality": {
+    "average_quality_score": 0.875,
+    "passed_threshold": true,
+    "threshold": 0.7,
+    "detailed_results": [
+      {
+        "query": "List all Python developers in Bangalore",
+        "response": "Based on the user's request, \"List all Python developers in Bangalore\", I will filter the list to include only candidates who have \"Bangalore\" as their location and \"python\" as one of their skills.\n\nHere is the list of candidates who match the user's request:\n\n1. Name: Samadhan Tangde\n   Location: Bangalore\n   Education: BE in E&TC\n   Exp: 4 years\n   Skills: python, sql, postgresql, mysql, numpy, pandas, matplotlib, seaborn, jupyter notebook, google colab, ms excel, github, powerbi, tableau, dat",
+        "contains_score": 1.0,
+        "not_contains_score": 0.5,
+        "overall_score": 0.75,
+        "intent": {
+          "type": "list_filter",
+          "keywords": [
+            "Python",
+            "Bangalore"
+          ]
+        }
+      },
+      {
+        "query": "Compare Akshit and Dhanshree  for a senior developer role",
+        "response": "**Comparison of Akshit and Dhanshree for a Senior Developer Role**\n\n### **Introduction**\n\nBoth Akshit and Dhanshree are strong candidates for a senior developer role, with impressive educational backgrounds and technical skills. However, there are some differences in their profiles that set them apart. In this comparison, we will evaluate their education, technical skills, projects, internships, and achievements to determine which candidate is better suited for the role.\n\n### **Education**\n\n| Ca",
+        "contains_score": 1.0,
+        "not_contains_score": 1,
+        "overall_score": 1.0,
+        "intent": {
+          "type": "compare_specific",
+          "target_names": [
+            "Akshit",
+            "Dhanshree"
+          ],
+          "role": "senior developer"
+        }
+      }
+    ]
+  },
+  "extraction_accuracy": {},
+  "summary": {
+    "overall_pass_rate": 0.5,
+    "tests_passed": 2,
+    "total_tests": 4,
+    "component_status": {
+      "intent_classification": "\u2705 PASSED",
+      "retrieval_precision": "\u274c FAILED",
+      "retrieval_recall": "\u274c FAILED",
+      "response_quality": "\u2705 PASSED"
+    }
+  }
+}
