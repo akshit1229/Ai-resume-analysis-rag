@@ -72,3 +72,14 @@ streamlit run app.py
 ```
 ### 6. UI interface run in browser add resume and start ingestion
 ### 7. After completing ingestion you can chat with the chatbot.
+
+## Run Evaluations
+## eval runner
+```bash
+uv run -m evals.eval_runner
+```
+
+## eval dashboard
+```bash
+python -m streamlit run .\evals\eval_dashboard.py
+```
