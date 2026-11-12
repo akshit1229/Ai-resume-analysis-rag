@@ -4,7 +4,7 @@ import json
 from typing import Dict, Any, List
 from dotenv import load_dotenv
 import streamlit as st
-from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_community.embeddings.fastembed import FastEmbedEmbeddings
 from langchain_chroma import Chroma
 from langchain_groq import ChatGroq
 from langchain_core.prompts import PromptTemplate
@@ -18,11 +18,11 @@ if not api_key:
     raise ValueError("GROQ_API_KEY not found. Please check your .env file.")
 
 DB_PATH = "./db"
-EMBEDDING_MODEL = "all-MiniLM-L6-v2"
+EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 
 class ResumeRAG:
     def __init__(self):
-        self.embeddings = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL)
+        self.embeddings = FastEmbedEmbeddings(model_name=EMBEDDING_MODEL)
         self.vectorstore = Chroma(
             persist_directory=DB_PATH, 
             embedding_function=self.embeddings,

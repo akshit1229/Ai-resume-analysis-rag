@@ -1,4 +1,10 @@
 import sys
+# Streamlit Cloud ships an old sqlite3 that chromadb rejects; use the bundled newer one if present
+try:
+    __import__("pysqlite3")
+    sys.modules["sqlite3"] = sys.modules.pop("pysqlite3")
+except ImportError:
+    pass
 import streamlit as st
 import os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))

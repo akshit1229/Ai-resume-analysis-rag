@@ -10,7 +10,7 @@ import streamlit as st
 from dotenv import load_dotenv
 from langchain_community.document_loaders import PyMuPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_community.embeddings.fastembed import FastEmbedEmbeddings
 from langchain_chroma import Chroma
 from langchain_groq import ChatGroq
 from langchain_core.documents import Document
@@ -26,16 +26,13 @@ DB_PATH = "./db"
 RESUME_DIR = "./resumes"
 MAX_WORKERS = 2  
 RESUMES_PER_BATCH = 10 
-EMBEDDING_MODEL = "all-MiniLM-L6-v2"
+EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 MAX_CONSECUTIVE_ERRORS = 4
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-embeddings = HuggingFaceEmbeddings(
-    model_name=EMBEDDING_MODEL,
-    model_kwargs={'device': 'cpu'}
-)
+embeddings = FastEmbedEmbeddings(model_name=EMBEDDING_MODEL)
 
 metadata_llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0.0, max_retries=1)
 
