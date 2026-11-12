@@ -40,7 +40,7 @@ logger = logging.getLogger(__name__)
 
 embeddings = FastEmbedEmbeddings(model_name=EMBEDDING_MODEL)
 
-metadata_llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0.0, max_retries=1)
+metadata_llm = ChatGroq(model="openai/gpt-oss-120b", temperature=0.0, max_retries=1)
 
 error_lock = threading.Lock()
 consecutive_rate_limit_errors = 0
