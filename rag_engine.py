@@ -13,6 +13,12 @@ from langchain_core.documents import Document
 
 load_dotenv()
 api_key =  os.getenv("GROQ_API_KEY")
+if not api_key:
+    try:
+        api_key = st.secrets["GROQ_API_KEY"]
+        os.environ["GROQ_API_KEY"] = api_key
+    except Exception:
+        pass
 # Verify API Key
 if not api_key:
     raise ValueError("GROQ_API_KEY not found. Please check your .env file.")
