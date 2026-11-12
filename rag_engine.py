@@ -93,7 +93,19 @@ class ResumeRAG:
         
         candidate_summaries = []
         keywords = [k.lower() for k in intent.get('keywords', [])]
-        
+
+        if not all_candidates:
+            return "No resumes are loaded yet. Please upload resumes and click Process/Ingest.", []
+
+        def _summarise(cand):
+            return (
+                f"- Name: {cand.get('name', 'Unknown')}\n"
+                f"  Location: {cand.get('location', 'Unknown')}\n"
+                f"  Education: {cand.get('education', 'Unknown')}\n"
+                f"  Exp: {cand.get('years_exp', 0)} years\n"
+                f"  Skills: {cand.get('skills', 'N/A')}\n"
+            )
+
         for cand in all_candidates:
             cand_str = (
                 f"{cand.get('name', '')} "
@@ -113,6 +125,11 @@ class ResumeRAG:
                     f"  Skills: {cand.get('skills', 'N/A')}\n"
                 )
 
+        # Keyword filter can miss things like "6 months" or "0 years" (numbers aren't text
+        # matches), so if nothing matched, give the LLM the whole registry to filter.
+        if not candidate_summaries:
+            candidate_summaries = [_summarise(c) for c in all_candidates]
+
         # Limit to avoid token overflow
         context_text = "\n\n".join(candidate_summaries[:30])
         
@@ -128,7 +145,10 @@ class ResumeRAG:
         1. Filter this list strictly based on the user's request.
         2. If the user asked for "Pune", only show candidates with Location "Pune".
         3. If the user asked for "B.Tech", only show candidates with that Education.
-        4. Present the result as a clean list.
+        4. Experience is given as a number of years in "Exp" (6 months = 0.5 years; 0 means fresher/no experience).
+        5. The registry above is complete and already provided; never ask the user for it.
+           If nobody matches, say so plainly.
+        6. Present the result as a clean list.
         """
         
         response = self.llm.invoke(system_prompt)
