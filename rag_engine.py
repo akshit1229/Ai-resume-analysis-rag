@@ -136,13 +136,21 @@ class ResumeRAG:
 
     def handle_compare_query(self, query: str, intent: Dict) -> tuple:
         """Strategy: Find specific documents for the named people and compare them."""
-        target_names = [n.lower() for n in intent.get('target_names', [])]
+        import re
+        stop = {"resume", "resumes", "cv", "both", "compare", "summary", "the", "of", "and"}
+        raw_names = intent.get('target_names') or []
+        # Split names into words, drop possessives/filler, keep words of 3+ letters
+        tokens = set()
+        for n in raw_names:
+            for w in re.findall(r"[a-z0-9]+", str(n).lower().replace("'s", "")):
+                if len(w) >= 3 and w not in stop:
+                    tokens.add(w)
         all_candidates = self._get_all_metadata()
-        
+
         matched_files = []
         for cand in all_candidates:
-            c_name = cand.get('name', '').lower()
-            if any(t in c_name for t in target_names):
+            haystack = f"{cand.get('name', '')} {cand.get('source', '')}".lower()
+            if any(t in haystack or (t.endswith('s') and t[:-1] in haystack) for t in tokens):
                 matched_files.append(cand.get('source'))
         
         if not matched_files:

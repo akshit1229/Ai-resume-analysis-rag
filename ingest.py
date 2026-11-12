@@ -105,7 +105,11 @@ def extract_metadata(text: str) -> Dict[str, Any]:
             
             if "```json" in content: content = content.split("```json")[1].split("```")[0].strip()
             elif "```" in content: content = content.split("```")[1].split("```")[0].strip()
-            
+            # Tolerate extra text around the JSON object
+            start, end = content.find("{"), content.rfind("}")
+            if start != -1 and end > start:
+                content = content[start:end + 1]
+
             data = json.loads(content)
             
             # Basic Normalization
@@ -150,6 +154,9 @@ def process_single_resume(file_path: str) -> List[Document]:
         if meta is None: return [] # Stop signal
 
         meta = flatten_metadata(meta)
+        if not str(meta.get('name', '')).strip() or meta.get('name') == "Unknown":
+            # Fall back to the filename so name searches still work
+            meta['name'] = os.path.splitext(filename)[0].replace("_", " ").replace("-", " ")
         meta['source'] = filename
         
         splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=150)
@@ -168,7 +175,13 @@ def run_ingestion():
     if not os.path.exists(DB_PATH): os.makedirs(DB_PATH)
     
     vectorstore = Chroma(persist_directory=DB_PATH, embedding_function=embeddings, collection_name="resume_store")
-    
+
+    # Drop resumes whose metadata extraction failed earlier so they get re-processed
+    try:
+        vectorstore._collection.delete(where={"summary": "Failed"})
+    except Exception as e:
+        logger.warning(f"Could not clean failed entries: {e}")
+
     existing_files = get_existing_files(vectorstore)
     logger.info(f"------ Found {len(existing_files)} resumes already in DB.")
     
